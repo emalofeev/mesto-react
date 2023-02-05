@@ -1,0 +1,7 @@
+.popup__content-submit_inative {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0);
+  pointer-events: none;
+  color: #000;
+  opacity: 0.2;
+}

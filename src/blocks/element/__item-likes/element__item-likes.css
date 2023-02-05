@@ -1,0 +1,5 @@
+.element__item-likes {
+  display: flex;
+  flex-direction: column;
+  width: 22px;
+}
