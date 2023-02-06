@@ -24,7 +24,13 @@
 ### Инструкция по установке
 ```no-highlight
 git clone https://github.com/emalofeev/mesto-react.git
+```
+```no-highlight
 cd mesto-react
+```
+```no-highlight
 npm install
+```
+```no-highlight
 npm start
 ```
