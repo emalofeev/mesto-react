@@ -1,9 +1,9 @@
-// import './App.css';
 import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
@@ -13,6 +13,8 @@ function App() {
     React.useState(false);
 
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+
+  const [selectedCard, setSelectedCard] = React.useState(false);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -26,10 +28,15 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handleCardClick(card) {
+    setSelectedCard(card);
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setSelectedCard(false);
   }
 
   return (
@@ -40,6 +47,7 @@ function App() {
         onEditAvatar={handleEditAvatarClick}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
+        onCardClick={handleCardClick}
       />
 
       <Footer />
@@ -131,47 +139,7 @@ function App() {
         }
       />
 
-      <div className="popup popup_type_delete">
-        <div className="popup__container popup__container-delete">
-          <button
-            className="popup__close"
-            type="button"
-            aria-label="Закрыть окно подтверждения удаления карточки"
-          ></button>
-          <h3 className="popup__content-question">Вы уверены?</h3>
-          <form
-            className="popup__content popup__content_type_delete"
-            name="delete-card"
-            noValidate
-          >
-            <button className="popup__content-delete" type="submit">
-              Да
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <template id="element-template" className="element-template">
-        <article className="element">
-          <button
-            className="element__delete"
-            type="button"
-            aria-label="Удалить фотографию"
-          ></button>
-          <img className="element__image" alt="" src="#" />
-          <div className="element__item">
-            <h2 className="element__item-name"></h2>
-            <div className="element__item-likes">
-              <button
-                className="element__item-like"
-                type="button"
-                aria-label="Лайкнуть"
-              ></button>
-              <span className="element__item-amount"></span>
-            </div>
-          </div>
-        </article>
-      </template>
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
     </>
   );
 }
