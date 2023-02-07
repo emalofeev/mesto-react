@@ -16,9 +16,6 @@ class Api {
       headers: this._headers,
     })
       .then(this._getResponseData)
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   getInitialCards() {
@@ -26,9 +23,6 @@ class Api {
       headers: this._headers,
     })
       .then(this._getResponseData)
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   editProfile(dataUser) {

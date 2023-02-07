@@ -2,7 +2,7 @@ import React from "react";
 import { api } from "../utils/api";
 import Card from "./Card";
 
-function Main(props) {
+function Main({ onEditProfile, onEditAvatar, onAddPlace, onCardClick }) {
   const [userName, setUserName] = React.useState("");
 
   const [userDescription, setUserDescription] = React.useState("");
@@ -11,24 +11,17 @@ function Main(props) {
 
   const [cards, setCards] = React.useState([]);
 
-  React.useEffect(() => {
-    api
-      .getProfileInfo()
-      .then((data) => {
-        setUserName(data.name);
-        setUserDescription(data.about);
-        setUserAvatar(data.avatar);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const cardsElements = cards.map((card) => {
+    return <Card key={card._id} onCardClick={onCardClick} card={card} />;
+  });
 
   React.useEffect(() => {
-    api
-      .getInitialCards()
+    Promise.all([api.getProfileInfo(), api.getInitialCards()])
       .then((data) => {
-        setCards(data);
+        setUserName(data[0].name);
+        setUserDescription(data[0].about);
+        setUserAvatar(data[0].avatar);
+        setCards(data[1]);
       })
       .catch((err) => {
         console.log(err);
@@ -39,10 +32,7 @@ function Main(props) {
     <main className="content">
       <section className="profile">
         <img className="profile__avatar" alt="Аватар" src={userAvatar} />
-        <div
-          className="profile__avatar-button"
-          onClick={props.onEditAvatar}
-        ></div>
+        <div className="profile__avatar-button" onClick={onEditAvatar}></div>
         <div className="profile__info">
           <div className="profile__edit">
             <h1 className="profile__edit-name">{userName}</h1>
@@ -50,7 +40,7 @@ function Main(props) {
               className="profile__edit-button"
               type="button"
               aria-label="Редактировать профиль"
-              onClick={props.onEditProfile}
+              onClick={onEditProfile}
             ></button>
           </div>
           <p className="profile__info-about">{userDescription}</p>
@@ -59,23 +49,10 @@ function Main(props) {
           className="profile__button"
           type="button"
           aria-label="Добавить карточку с фотографией"
-          onClick={props.onAddPlace}
+          onClick={onAddPlace}
         ></button>
       </section>
-      <section className="elements">
-        {cards.map((card) => {
-          return (
-            <Card
-              key={card._id}
-              link={card.link}
-              name={card.name}
-              likes={card.likes.length}
-              onCardClick={props.onCardClick}
-              card={card}
-            />
-          );
-        })}
-      </section>
+      <section className="elements">{cardsElements}</section>
     </main>
   );
 }

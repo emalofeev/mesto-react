@@ -14,7 +14,9 @@ function App() {
 
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 
-  const [selectedCard, setSelectedCard] = React.useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+
+  const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -30,13 +32,15 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCard(card);
+    setIsImagePopupOpen(true);
   }
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard(false);
+    setIsImagePopupOpen(false);
+    setSelectedCard({});
   }
 
   return (
@@ -58,88 +62,83 @@ function App() {
         button={"Сохранить"}
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
-        children={
-          <>
-            <input
-              className="popup__input popup__input_type_linkAvatar"
-              placeholder="Ссылка на аватар"
-              name="avatar"
-              type="url"
-              id="popup__input-error-linkAvatar"
-              required
-            />
-            <span className="popup__text-error popup__input-error-linkAvatar"></span>
-          </>
-        }
-      />
+      >
+        <input
+          className="popup__input popup__input_type_linkAvatar"
+          placeholder="Ссылка на аватар"
+          name="avatar"
+          type="url"
+          id="popup__input-error-linkAvatar"
+          required
+        />
+        <span className="popup__text-error popup__input-error-linkAvatar"></span>
+      </PopupWithForm>
 
       <PopupWithForm
         name={"profile"}
         title={"Редактировать профиль"}
-        isOpen={isEditProfilePopupOpen}
         button={"Сохранить"}
+        isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
-        children={
-          <>
-            <input
-              className="popup__input popup__input_type_name"
-              name="name"
-              type="text"
-              placeholder="Имя"
-              minLength="2"
-              maxLength="40"
-              id="popup__input-error-name"
-              required
-            />
-            <span className="popup__text-error popup__input-error-name"></span>
-            <input
-              className="popup__input popup__input_type_about"
-              name="about"
-              type="text"
-              placeholder="О себе"
-              minLength="2"
-              maxLength="200"
-              id="popup__input-error-about"
-              required
-            />
-            <span className="popup__text-error popup__input-error-about"></span>
-          </>
-        }
-      />
+      >
+        <input
+          className="popup__input popup__input_type_name"
+          name="name"
+          type="text"
+          placeholder="Имя"
+          minLength="2"
+          maxLength="40"
+          id="popup__input-error-name"
+          required
+        />
+        <span className="popup__text-error popup__input-error-name"></span>
+        <input
+          className="popup__input popup__input_type_about"
+          name="about"
+          type="text"
+          placeholder="О себе"
+          minLength="2"
+          maxLength="200"
+          id="popup__input-error-about"
+          required
+        />
+        <span className="popup__text-error popup__input-error-about"></span>
+      </PopupWithForm>
 
       <PopupWithForm
         name={"card"}
         title={"Новое место"}
-        isOpen={isAddPlacePopupOpen}
         button={"Создать"}
+        isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
-        children={
-          <>
-            <input
-              className="popup__input popup__input_type_nameCard"
-              placeholder="Название"
-              name="name"
-              type="text"
-              minLength="2"
-              maxLength="30"
-              id="popup__input-error-nameCard"
-              required
-            />
-            <span className="popup__text-error popup__input-error-nameCard"></span>
-            <input
-              className="popup__input popup__input_type_linkCard"
-              placeholder="Ссылка на картинку"
-              name="link"
-              type="url"
-              id="popup__input-error-linkCard"
-              required
-            />
-            <span className="popup__text-error popup__input-error-linkCard"></span>
-          </>
-        }
-      />
+      >
+        <input
+          className="popup__input popup__input_type_nameCard"
+          placeholder="Название"
+          name="name"
+          type="text"
+          minLength="2"
+          maxLength="30"
+          id="popup__input-error-nameCard"
+          required
+        />
+        <span className="popup__text-error popup__input-error-nameCard"></span>
+        <input
+          className="popup__input popup__input_type_linkCard"
+          placeholder="Ссылка на картинку"
+          name="link"
+          type="url"
+          id="popup__input-error-linkCard"
+          required
+        />
+        <span className="popup__text-error popup__input-error-linkCard"></span>
+      </PopupWithForm>
 
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <ImagePopup
+        isOpen={isImagePopupOpen}
+        onClose={closeAllPopups}
+        card={selectedCard}
+      />
     </>
   );
 }
