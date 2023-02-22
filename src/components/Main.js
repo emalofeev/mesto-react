@@ -11,11 +11,8 @@ function Main({
   onCardDelete,
   onCardLike,
 }) {
-  
   const currentUser = React.useContext(CurrentUserContext);
-
   const cards = React.useContext(CardContext);
-
   const cardsElements = cards.map((card) => {
     return (
       <Card

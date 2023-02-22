@@ -21,7 +21,6 @@ function PopupWithForm({
           className={`popup__content popup__content_type_${name}`}
           name={`edit-${name}`}
           onSubmit={handleSubmit}
-          noValidate
         >
           {children}
           <button className="popup__content-submit" type="submit">

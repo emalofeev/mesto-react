@@ -8,22 +8,17 @@ import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { CardContext } from "../contexts/CardContext";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
-
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
-
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-
   const [selectedCard, setSelectedCard] = React.useState({});
-
   const [currentUser, setCurrentUser] = React.useState({});
-
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
@@ -90,6 +85,18 @@ function App() {
       });
   }
 
+  function handleUpdateAvatar(dataAvatar) {
+    api
+      .changeAvatar(dataAvatar)
+      .then((data) => {
+        setCurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -115,23 +122,11 @@ function App() {
 
           <Footer />
 
-          <PopupWithForm
-            name={"avatar"}
-            title={"Обновить аватар"}
-            button={"Сохранить"}
+          <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
-          >
-            <input
-              className="popup__input popup__input_type_linkAvatar"
-              placeholder="Ссылка на аватар"
-              name="avatar"
-              type="url"
-              id="popup__input-error-linkAvatar"
-              required
-            />
-            <span className="popup__text-error popup__input-error-linkAvatar"></span>
-          </PopupWithForm>
+            onUpdateAvatar={handleUpdateAvatar}
+          />
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
