@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext } from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -11,7 +11,7 @@ function Main({
   onCardLike,
   cards,
 }) {
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
   const cardsElements = cards.map((card) => {
     return (
       <Card
