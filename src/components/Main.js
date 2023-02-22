@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { CardContext } from "../contexts/CardContext";
 
 function Main({
   onEditProfile,
@@ -10,9 +9,9 @@ function Main({
   onCardClick,
   onCardDelete,
   onCardLike,
+  cards,
 }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const cards = React.useContext(CardContext);
   const cardsElements = cards.map((card) => {
     return (
       <Card

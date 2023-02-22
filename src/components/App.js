@@ -2,13 +2,12 @@ import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { CardContext } from "../contexts/CardContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
@@ -97,6 +96,18 @@ function App() {
       });
   }
 
+  function handleAddPlace(dataCard) {
+    api
+      .addCard(dataCard)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -108,67 +119,43 @@ function App() {
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        <CardContext.Provider value={cards}>
-          <Header />
+        <Header />
 
-          <Main
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          />
+        <Main
+          onEditAvatar={handleEditAvatarClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          cards={cards}
+        />
 
-          <Footer />
+        <Footer />
 
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-          />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-          />
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
 
-          <PopupWithForm
-            name={"card"}
-            title={"Новое место"}
-            button={"Создать"}
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-          >
-            <input
-              className="popup__input popup__input_type_nameCard"
-              placeholder="Название"
-              name="name"
-              type="text"
-              minLength="2"
-              maxLength="30"
-              id="popup__input-error-nameCard"
-              required
-            />
-            <span className="popup__text-error popup__input-error-nameCard"></span>
-            <input
-              className="popup__input popup__input_type_linkCard"
-              placeholder="Ссылка на картинку"
-              name="link"
-              type="url"
-              id="popup__input-error-linkCard"
-              required
-            />
-            <span className="popup__text-error popup__input-error-linkCard"></span>
-          </PopupWithForm>
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlace}
+        />
 
-          <ImagePopup
-            isOpen={isImagePopupOpen}
-            onClose={closeAllPopups}
-            card={selectedCard}
-          />
-        </CardContext.Provider>
+        <ImagePopup
+          isOpen={isImagePopupOpen}
+          onClose={closeAllPopups}
+          card={selectedCard}
+        />
       </CurrentUserContext.Provider>
     </>
   );
